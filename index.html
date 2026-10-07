@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#24382C">
-<title>Angela-Maria — Yoga, Healing, Workshops &amp; Art</title>
-<meta name="description" content="I'm Angela-Maria — a 500hr yoga teacher, artist and facilitator. I hold women's circles, workshops, online courses and 1:1 healing sessions.">
-<meta property="og:title" content="Angela-Maria — Yoga, Healing, Workshops & Art">
+<title>Angela-Maria — Yoga Teacher · Private Sessions &amp; Women's Circles</title>
+<meta name="description" content="Angela-Maria is a 500hr yoga teacher and facilitator. Private online sessions, group workshops and women's circles — movement, breath and embodied practice.">
+<meta property="og:title" content="Angela-Maria — Yoga Teacher · Private Sessions &amp; Women's Circles">
+<meta property="og:description" content="Movement, breath and embodied practice with Angela-Maria. Private sessions, workshops and women's circles.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,27 +154,25 @@ body.menu-open{overflow:hidden}
 
 /* practice */
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1.5rem 3rem}
-.head h2{max-width:8ch}
-.tabs{display:flex;gap:.5rem;margin-top:3rem;border-bottom:1px solid var(--stone)}
-.tab{background:none;border:0;font:500 .95rem var(--sans);color:var(--char);opacity:.55;padding:.9rem 1.6rem .9rem 0;min-height:44px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
-.tab[aria-selected=true]{opacity:1;border-bottom-color:var(--forest)}
-.panel{display:none;grid-template-columns:5fr 6fr;gap:clamp(2rem,6vw,6rem);margin-top:4rem;align-items:start}
-.panel.on{display:grid;animation:in .6s ease both}
-@keyframes in{from{opacity:0}to{opacity:1}}
+.head h2{max-width:9ch}
+.practice{display:grid;grid-template-columns:5fr 6fr;gap:clamp(2rem,6vw,6rem);margin-top:3.5rem;align-items:start}
 .pf{position:relative;isolation:isolate}
 .pf::before{content:"";position:absolute;inset:-5% 12% 10% -6%;background:var(--olive);border-radius:50%;z-index:-1;opacity:.45}
 .pf .pic{aspect-ratio:4/5;background:var(--img2) 50% 52%/cover;border-radius:50% 50% 4px 4px/26% 26% 4px 4px;margin-left:8%}
-.panel.c .pic{background:var(--img1) 62% 22%/230% auto;border-radius:4px 46% 4px 4px}
-.panel .list{padding-top:2rem}
-.item:nth-child(2){margin-left:clamp(0rem,5vw,4rem)}
-.item{display:grid;grid-template-columns:1fr auto;gap:.3rem 1.5rem;padding:1.8rem 0;border-top:1px solid var(--stone);text-decoration:none;align-items:baseline;transition:padding .5s,background .5s}
-.item:first-child{border-top:0;padding-top:0}
-.item:hover{padding-left:1rem;background:linear-gradient(90deg,rgba(125,134,104,.2),transparent)}
-.item h3{font:400 clamp(1.8rem,3.4vw,2.8rem)/1.05 var(--display);letter-spacing:-.03em}
-.item p{grid-column:1;color:#40352D;max-width:36ch}
-.item .when{grid-column:1;font-size:.82rem;color:var(--earth)}
-.item .go{grid-column:2;grid-row:1;font-size:1.4rem;transition:transform .4s}
-.item:hover .go{transform:translateX(6px)}
+.exp-list{padding-top:.5rem}
+.exp{padding:1.75rem 0;border-top:1px solid var(--stone)}
+.exp:first-child{border-top:0;padding-top:0}
+.exp h3{font:400 clamp(1.65rem,3vw,2.5rem)/1.08 var(--display);letter-spacing:-.03em;margin-bottom:.65rem}
+.exp p{color:#40352D;max-width:38ch;font-size:.98rem;line-height:1.55}
+.exp p+p{margin-top:.45rem}
+.exp .for{font-size:.82rem;color:var(--earth);margin-top:.55rem}
+.exp .go{display:inline-block;margin-top:.85rem;font-weight:500;font-size:.9rem;text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;padding-bottom:2px}
+.exp .go:hover{background-size:0 1px}
+.upcoming{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--stone)}
+.upcoming p{max-width:36ch;color:#40352D;line-height:1.55}
+.upcoming p+p{margin-top:.65rem}
+.upcoming .actions{margin-top:1.25rem}
+.upcoming-h{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.5rem;line-height:1.05}
 
 /* 1:1: arched portrait inside a big circle, headline crosses into the circle */
 .oo{display:grid;grid-template-columns:5fr 6fr;gap:clamp(2rem,6vw,7rem);align-items:center}
@@ -202,9 +201,16 @@ body.menu-open{overflow:hidden}
 .ab p{max-width:38ch;color:var(--paper);font-size:1.12rem;line-height:1.62}
 .ab p+p{margin-top:1.1rem}
 .ab .note{margin-top:1.65rem;font-size:clamp(1.55rem,4.5vw,2rem)}
-/* store: three abstract object shapes, tiny list below, one link */
+/* store */
 .store-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1.5rem}
-.objs{display:grid;grid-template-columns:1fr 1.3fr .9fr;gap:clamp(1.5rem,4vw,4rem);margin-top:4rem;align-items:end}
+.store-h h2{max-width:11ch}
+.store-intro{margin-top:1.5rem;max-width:40ch;color:#40352D}
+.shop-grp{font:500 .72rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--earth);margin:2.75rem 0 1.25rem}
+.shop-grp:first-of-type{margin-top:2rem}
+.objs{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:end}
+.objs--studio{grid-template-columns:1fr;max-width:22rem}
+.objs--studio .obj .sh{aspect-ratio:1/1;border-radius:4px 42% 4px 4px}
+.objs--practice{max-width:100%}
 .obj{display:block;text-decoration:none}
 .obj .sh{display:flex;align-items:center;justify-content:center;transition:transform .7s}
 .obj:hover .sh{transform:rotate(-2deg) translateY(-6px)}
@@ -220,6 +226,7 @@ body.menu-open{overflow:hidden}
 #contact::before{content:"";position:absolute;right:-14vw;bottom:-18vw;width:min(52vw,36rem);aspect-ratio:1;border-radius:50%;background:var(--moss);opacity:.35}
 #contact .wrap{width:100%}
 #contact h2{font-size:clamp(2.5rem,8vw,5.5rem);line-height:.92;margin-bottom:.65rem;max-width:14ch}
+#contact .lede{color:var(--grey);max-width:42ch;margin-top:.5rem}
 #contact .actions{margin-top:1.35rem}
 .ch{display:flex;flex-wrap:wrap;gap:.75rem 1.75rem;margin-top:1.25rem}
 footer{background:var(--char);color:var(--grey);padding:1rem 0 calc(1rem + env(safe-area-inset-bottom,0px));font-size:.75rem;position:relative;z-index:2;border-top:1px solid rgba(232,229,220,.07)}
@@ -271,18 +278,12 @@ h2.disp{font-size:clamp(2.55rem,12.5vw,3.7rem)}
 
 .head{display:block}
 .head .lede{margin-top:1rem}
-.tabs{margin-top:2rem;border:0;background:rgba(36,56,44,.09);padding:.3rem;gap:.25rem;border-radius:2px 16px 2px 16px}
-.tab{flex:1;opacity:1;text-align:center;padding:.7rem .5rem;margin:0;border:0;border-radius:2px 12px 2px 12px;color:var(--forest);transition:background .35s,color .35s}
-.tab[aria-selected=true]{background:var(--forest);color:var(--ivory)}
-.panel{margin-top:2rem;gap:1.75rem}
-.panel.on{grid-template-columns:1fr}
+.practice{grid-template-columns:1fr;gap:1.75rem;margin-top:2rem}
 .pf{width:70%}
 .pf .pic{aspect-ratio:1/1.08}
-.panel .list{padding-top:0}
-.item:nth-child(2){margin-left:0}
-.item{padding:1.25rem 0;min-height:4.5rem}
-.item h3{font-size:1.85rem}
-.item:active{background:linear-gradient(90deg,rgba(125,134,104,.2),transparent)}
+.exp{padding:1.35rem 0}
+.exp h3{font-size:1.75rem}
+.upcoming{margin-top:2rem;padding-top:1.5rem}
 
 .oo{grid-template-columns:1fr;gap:2.5rem}
 .po{width:68%}
@@ -303,11 +304,12 @@ h2.disp{font-size:clamp(2.55rem,12.5vw,3.7rem)}
 .ab p+p{margin-top:.95rem}
 .ab .note{font-size:clamp(1.6rem,5vw,2.05rem);margin-top:1.25rem}
 
-.objs{grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:2.25rem}
-.obj:nth-child(2){grid-column:1/-1;order:-1}
-.obj:nth-child(2) .sh{aspect-ratio:16/10}
+.objs--practice{grid-template-columns:1fr 1fr;gap:1.1rem}
+.objs--studio{max-width:100%}
 .obj h3{font-size:1.35rem}
 .store-h{display:block}
+.store-intro{font-size:.98rem}
+.shop-grp{margin:2rem 0 1rem}
 .store-h .link{display:inline-flex;align-items:center;min-height:44px;margin-top:1.1rem}
 
 #contact{padding:3.25rem 0 2rem}
@@ -328,8 +330,7 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 .rv{transform:translateY(14px);transition-duration:.7s}
 }
 @media(max-width:860px) and (hover:none){
-.item:hover{padding-left:0;background:none}
-.item:hover .go,.obj:hover .sh{transform:none}
+.obj:hover .sh{transform:none}
 }
 @media(max-width:860px) and (max-height:700px){
 .nav-sheet__panel{padding-top:calc(4.5rem + env(safe-area-inset-top,0px))}
@@ -350,12 +351,12 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 
 <header id="nav" aria-label="Site">
 <div class="nav-bar wrap">
-<a class="logo" href="#hero">Angela-Maria<span>Yoga · Healing · Art</span></a>
+<a class="logo" href="#hero">Angela-Maria<span>Yoga · Movement · Embodiment</span></a>
 <div class="nav-actions">
 <nav class="nav-links" aria-label="Primary">
 <a href="#practice">Practice</a><a href="#oneone">1:1</a><a href="#about">About</a><a href="#store">Shop</a>
 </nav>
-<a class="nav-cta" href="#contact">Book a session</a>
+<a class="nav-cta" href="#oneone">Book a private session</a>
 <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-sheet" aria-label="Open menu">
 <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i><i></i></span>
 </button>
@@ -369,16 +370,16 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 <div class="nav-sheet__inner">
 <p class="nav-sheet__tag">Navigate</p>
 <nav class="nav-sheet__list" aria-label="Mobile">
-<a href="#hero"><span class="idx">00</span><span class="lbl">Home</span><span class="hint">Feel your way home</span></a>
-<a href="#practice"><span class="idx">01</span><span class="lbl">Practice</span><span class="hint">Workshops &amp; online courses</span></a>
-<a href="#oneone"><span class="idx">02</span><span class="lbl">1:1 Healing</span><span class="hint">Private sessions with me</span></a>
-<a href="#about"><span class="idx">03</span><span class="lbl">About</span><span class="hint">My story in movement &amp; art</span></a>
-<a href="#store"><span class="idx">04</span><span class="lbl">Shop</span><span class="hint">Objects for the journey</span></a>
-<a href="#contact"><span class="idx">05</span><span class="lbl">Connect</span><span class="hint">WhatsApp, Instagram &amp; email</span></a>
+<a href="#hero"><span class="idx">00</span><span class="lbl">Home</span><span class="hint">Yoga with Angela-Maria</span></a>
+<a href="#practice"><span class="idx">01</span><span class="lbl">Practice</span><span class="hint">Private, group &amp; circles</span></a>
+<a href="#oneone"><span class="idx">02</span><span class="lbl">1:1</span><span class="hint">Private sessions</span></a>
+<a href="#about"><span class="idx">03</span><span class="lbl">About</span><span class="hint">Who I am</span></a>
+<a href="#store"><span class="idx">04</span><span class="lbl">Shop</span><span class="hint">Studio &amp; practice objects</span></a>
+<a href="#contact"><span class="idx">05</span><span class="lbl">Connect</span><span class="hint">WhatsApp &amp; Instagram</span></a>
 </nav>
 <div class="nav-sheet__foot">
-<a class="nav-cta" href="#contact">Book a session</a>
-<div class="nav-sheet__social"><a href="https://instagram.com/">Instagram</a><a href="https://wa.me/">WhatsApp</a><a href="mailto:hello@example.com">Email</a></div>
+<a class="nav-cta" href="#oneone">Book a private session</a>
+<div class="nav-sheet__social"><a href="https://instagram.com/">Instagram</a><a href="https://wa.me/">WhatsApp</a></div>
 </div>
 </div>
 </div>
@@ -390,8 +391,8 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 <div class="wrap hero">
 <div class="tx">
 <h1 class="disp">Feel your way <em>home.</em></h1>
-<p class="lede"><span class="m-hide">Feet on the ground. Breath in your ribs. Skin meeting the air. </span>I hold space for yoga, healing and art — in women's circles, workshops and unhurried 1:1 sessions.</p>
-<div class="actions"><a class="btn" href="#oneone">Book a 1:1 session</a><a class="link" href="#practice">Step into the practice</a></div>
+<p class="lede">I'm Angela-Maria, a yoga teacher and facilitator. I work with movement, breath and attention — in private online sessions, group workshops and women's circles.</p>
+<div class="actions"><a class="btn" href="#oneone">Book a private session</a><a class="link" href="#practice">Explore the practice</a></div>
 </div>
 <div class="pw"><div class="portrait" role="img" aria-label="Angela-Maria smiling among green leaves with a white flower in her curls"></div></div>
 </div>
@@ -399,27 +400,33 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 
 <section id="practice" class="light cv">
 <div class="wrap">
-<div class="head rv"><h2 class="disp">The practice</h2><p class="lede">Join me in person, or practise from home with me.</p></div>
-<div class="tabs rv" role="tablist" aria-label="Workshops or courses">
-<button class="tab" role="tab" id="t-w" aria-selected="true" aria-controls="p-w">Workshops</button>
-<button class="tab" role="tab" id="t-c" aria-selected="false" aria-controls="p-c" tabindex="-1">Online courses</button>
+<div class="head rv"><h2 class="disp">The practice</h2><p class="lede">Three ways to work with me — each with a different rhythm.</p></div>
+<div class="practice rv">
+<div class="pf"><div class="pic" role="img" aria-label="Angela-Maria moving between two pine trunks in a forest"></div></div>
+<div class="exp-list">
+<article class="exp" id="exp-private">
+<h3>Private 1:1</h3>
+<p>One-to-one sessions online. We talk, then move and breathe at a pace that fits your body and your week.</p>
+<p class="for">For you if you want personal guidance and continuity.</p>
+<a class="go" href="#oneone">How private sessions work →</a>
+</article>
+<article class="exp" id="exp-workshops">
+<h3>Workshops &amp; group practice</h3>
+<p>In-person group sessions — embodied movement, breath and presence. From time to time an evening may include ritual or cacao; I announce those separately.</p>
+<p class="for">For you if you learn well with others and want the energy of a room.</p>
+<a class="go" href="#contact">Ask about workshops →</a>
+</article>
+<article class="exp" id="exp-circles">
+<h3>Women's circles</h3>
+<p>Smaller gatherings for women — practice, conversation and being together without needing to perform.</p>
+<p class="for">For you if you want depth and company in a circle.</p>
+<a class="go" href="#contact">Ask about circles →</a>
+</article>
+<div class="upcoming">
+<p class="disp upcoming-h">Nothing scheduled just yet.</p>
+<p>When the next workshop or circle has a date, I share it on Instagram first.</p>
+<div class="actions"><a class="link" href="https://instagram.com/">Follow on Instagram</a></div>
 </div>
-
-<div class="panel on" id="p-w" role="tabpanel" aria-labelledby="t-w">
-<div class="pf"><div class="pic" role="img" aria-label="Angela-Maria moving between two pine trunks"></div></div>
-<div class="list">
-<a class="item" href="#contact"><h3>Women's circle</h3><span class="go" aria-hidden="true">→</span><p>I gather us in a space to be witnessed.</p><span class="when">Date and location to be announced</span></a>
-<a class="item" href="#contact"><h3>Movement workshop</h3><span class="go" aria-hidden="true">→</span><p>I guide you back to the body.</p><span class="when">Date and location to be announced</span></a>
-<a class="item" href="#contact"><h3>Cacao ceremony</h3><span class="go" aria-hidden="true">→</span><p>Together we breathe, ritual and intention.</p><span class="when">Date and location to be announced</span></a>
-</div>
-</div>
-
-<div class="panel c" id="p-c" role="tabpanel" aria-labelledby="t-c" hidden>
-<div class="pf"><div class="pic" role="img" aria-label="Angela-Maria with closed eyes, smiling"></div></div>
-<div class="list">
-<a class="item" href="#contact"><h3>Embodiment</h3><span class="go" aria-hidden="true">→</span><p>I teach grounding, listening, softening.</p><span class="when">Duration and level to be announced</span></a>
-<a class="item" href="#contact"><h3>Mindful movement</h3><span class="go" aria-hidden="true">→</span><p>I share rhythm, movement and rest.</p><span class="when">Duration and level to be announced</span></a>
-<a class="item" href="#contact"><h3>Self connection</h3><span class="go" aria-hidden="true">→</span><p>I hold space for meditation and reflection.</p><span class="when">Duration and level to be announced</span></a>
 </div>
 </div>
 </div>
@@ -429,15 +436,17 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 <div class="wrap oo">
 <div class="po rv"><div class="pic" role="img" aria-label="Angela-Maria smiling at the edge of a turquoise pool, resting her chin on her arms"></div></div>
 <div class="rv">
-<h2 class="disp">One space, just for you.</h2>
-<p class="lede">I offer private online sessions — room to slow down and come back to yourself.</p>
+<h2 class="disp">Private sessions</h2>
+<p class="lede">Online, one-to-one — yoga, breath and embodied practice shaped around you.</p>
 <dl class="facts">
-<div><dt>What I offer</dt><dd>A one-to-one session of yoga, breath and healing work with me.</dd></div>
-<div><dt>This is for you if</dt><dd>You want personal guidance, at your own pace.</dd></div>
-<div><dt>What happens</dt><dd>We talk first. Then we move and breathe together.</dd></div>
-<div><dt>How to book</dt><dd>Send me a message and we'll find a time.</dd></div>
+<div><dt>What it is</dt><dd>A private session with me: conversation, movement and breath. Not therapy — practice.</dd></div>
+<div><dt>Who it's for</dt><dd>You want steady guidance, a quieter room, or you're returning to your body after a demanding season.</dd></div>
+<div><dt>How we begin</dt><dd>You message me. We find a time. You arrive as you are — no performance required.</dd></div>
+<div><dt>During the session</dt><dd>We check in. I guide movement and breath that match what you need that day — sometimes still, sometimes stronger.</dd></div>
+<div><dt>Afterward</dt><dd>You leave with something concrete: a sequence, a breath, or simply a clearer sense of where you are.</dd></div>
+<div><dt>How to book</dt><dd>WhatsApp or Instagram — tell me you're interested in a private session.</dd></div>
 </dl>
-<div class="actions"><a class="btn" href="#contact">Book a 1:1 session</a></div>
+<div class="actions"><a class="btn" href="#contact">Book a private session</a><a class="link" href="https://wa.me/">Ask on WhatsApp</a></div>
 </div>
 </div>
 </section>
@@ -447,8 +456,10 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 <figure class="pp rv" style="margin-block:0"><div class="pic" role="img" aria-label="Angela-Maria in a pine forest, hands on two leaning trunks, head thrown back with her hair in motion"></div></figure>
 <div class="tx rv">
 <h2 class="disp">Movement became my language. Art became another.</h2>
-<p>I'm Angela-Maria — a 500hr yoga teacher, artist and facilitator.</p>
-<p>I treat both as ways of listening: to the body, to each other and to the world around us.</p>
+<p>I didn't come to yoga for fitness. I came because my body had things to say, and I needed a way to listen.</p>
+<p>Over time, practice became less about shapes and more about attention — how I breathe, how I meet a day, how I stand in a room with other women.</p>
+<p>I'm a 500hr yoga teacher and facilitator. I'm also a visual artist; painting trained the same eye I bring to teaching — noticing light, weight, and what is true before words arrive.</p>
+<p>Good practice, to me, feels honest: warm, sometimes quiet, never performative.</p>
 <p class="hand note">my hands, in paint too</p>
 </div>
 </div>
@@ -456,10 +467,15 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 
 <section id="store" class="light cv">
 <div class="wrap">
-<div class="store-h rv"><h2 class="disp" style="max-width:9ch">Objects for the journey.</h2><a class="link" href="#contact">See what I offer →</a></div>
-<div class="objs rv">
+<div class="store-h rv"><h2 class="disp">The shop</h2><a class="link" href="#contact">Explore the shop →</a></div>
+<p class="store-intro rv">A small, curated collection — original works from my studio, and a few objects I use in practice.</p>
+<p class="shop-grp rv">The studio</p>
+<div class="objs objs--studio rv">
+<a class="obj" href="#contact"><div class="sh" style="background:var(--earth)"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="10" y="8" width="40" height="44"/><path d="M16 42c10-20 18-4 28-24"/></svg></div><h3>Original art print</h3><p>Signed on cotton paper — a piece I made in the studio, not a generic reproduction.</p></a>
+</div>
+<p class="shop-grp rv">The practice</p>
+<div class="objs objs--practice rv">
 <a class="obj" href="#contact"><div class="sh"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="30" cy="30" r="18"/><circle cx="30" cy="30" r="9"/><path d="M30 12v36"/></svg></div><h3>Practice mat</h3><p>Earth tone</p></a>
-<a class="obj" href="#contact"><div class="sh"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="10" y="8" width="40" height="44"/><path d="M16 42c10-20 18-4 28-24"/></svg></div><h3>Original art print</h3><p>Signed, cotton paper · <span class="hand" style="font-size:1.15em">from my studio</span></p></a>
 <a class="obj" href="#contact"><div class="sh"><svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M14 20l24-8 10 8v20l-24 8-10-8z"/><path d="M14 20l24 8 10-8M38 28v20"/></svg></div><h3>Cork block</h3><p>Hand-finished pair</p></a>
 </div>
 </div>
@@ -467,9 +483,10 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 
 <section id="contact" class="dark cv">
 <div class="wrap">
-<h2 class="disp">I'd love to hear from you.</h2>
+<h2 class="disp">Begin with a hello.</h2>
+<p class="lede">A private session, a future gathering, or a simple question — message me and we'll take it from there.</p>
 <div class="actions"><a class="btn" href="https://wa.me/">Message on WhatsApp</a></div>
-<div class="ch"><a class="link" href="https://instagram.com/">Instagram</a><a class="link" href="mailto:hello@example.com">hello@example.com</a></div>
+<div class="ch"><a class="link" href="https://instagram.com/">Instagram</a></div>
 <p class="hand sign">Angela-Maria</p>
 </div>
 </section>
@@ -477,7 +494,7 @@ body.menu-open .dock{transform:translateY(110%);visibility:hidden}
 
 <footer><div class="wrap foot"><span class="foot__name">Angela-Maria</span><span class="foot__copy">© 2026</span></div></footer>
 
-<div class="dock" id="dock"><a class="btn" href="#contact">Book a session</a></div>
+<div class="dock" id="dock"><a class="btn" href="#oneone">Book a private session</a></div>
 
 <script>
 (function(){
@@ -496,16 +513,6 @@ sheet.querySelectorAll('.nav-sheet__list a,.nav-sheet__foot .nav-cta').forEach(f
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sheet.classList.contains('o')){setMenu(false);menuBtn.focus()}});
 matchMedia('(min-width:861px)').addEventListener('change',function(m){if(m.matches)setMenu(false)});
 addEventListener('scroll',function(){nav.classList.toggle('s',scrollY>60)},{passive:true});
-
-var tabs=[].slice.call(document.querySelectorAll('.tab'));
-function pick(t){tabs.forEach(function(o){var on=o===t;o.setAttribute('aria-selected',on);o.tabIndex=on?0:-1;
-  var p=document.getElementById(o.getAttribute('aria-controls'));p.hidden=!on;p.classList.toggle('on',on)})}
-tabs.forEach(function(t,i){
-  t.addEventListener('click',function(){pick(t)});
-  t.addEventListener('keydown',function(e){
-    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];pick(n);n.focus()}
-  });
-});
 
 var dock=document.getElementById('dock'),heroOut=false,contactIn=false;
 function updDock(){dock.classList.toggle('show',heroOut&&!contactIn)}
