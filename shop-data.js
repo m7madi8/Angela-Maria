@@ -13,17 +13,17 @@ window.ANGILA_SHOP = {
     },
     {
       id: 'macrame',
-      label: 'Macramé & Wall Hangings',
+      label: 'Macramé',
       intro: 'Knotwork for a calm wall.'
     },
     {
       id: 'decor',
-      label: 'Handmade Art & Decor',
+      label: 'Art & decor',
       intro: 'Small objects for a quiet room.'
     },
     {
       id: 'gifts',
-      label: 'Thoughtful Gifts',
+      label: 'Gifts',
       intro: 'Pieces chosen to be given.'
     }
   ],

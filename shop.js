@@ -305,46 +305,95 @@
     );
   }
 
-  function groupProducts(items) {
-    if (items.length === 1) return [{ type: 'feature', flip: false, items: items }];
-    var groups = [];
-    var buffer = [];
-    var featureCount = 0;
-    function flush() {
-      while (buffer.length >= 2) groups.push({ type: 'pair', items: buffer.splice(0, 2) });
-      if (buffer.length) groups.push({ type: 'ledger', items: buffer.splice(0, 1) });
-    }
-    items.forEach(function (p) {
-      if (p.layout === 'feature') {
-        flush();
-        groups.push({ type: 'feature', flip: featureCount % 2 === 1, items: [p] });
-        featureCount += 1;
-      } else buffer.push(p);
-    });
-    flush();
-    return groups;
+  function railPrice(product) {
+    if (product.price == null || product.price === '') return 'On request';
+    return formatPrice(product);
+  }
+
+  function railCardHtml(product) {
+    var src = product.images && product.images[0] ? product.images[0] : '';
+    var soon = product.available === false ? ' shop-card--soon' : '';
+    return (
+      '<a class="shop-card' +
+      soon +
+      '" href="' +
+      productUrl(product.slug) +
+      '">' +
+      '<figure class="shop-card__media">' +
+      '<img src="' +
+      escapeHtml(src) +
+      '" alt="' +
+      escapeHtml(product.name) +
+      '" loading="lazy" decoding="async">' +
+      '</figure>' +
+      '<h3 class="shop-card__name">' +
+      escapeHtml(product.name) +
+      '</h3>' +
+      '<p class="shop-card__price">' +
+      escapeHtml(railPrice(product)) +
+      '</p></a>'
+    );
   }
 
   function galleryHtml(items) {
     if (!items.length) {
       return '<p class="shop-empty">Nothing here yet. <a href="#contact">Ask me</a>.</p>';
     }
-    return groupProducts(items)
-      .map(function (group) {
-        if (group.type === 'pair') {
-          return (
-            '<div class="shop-pair">' +
-            group.items
-              .map(function (p) {
-                return pieceHtml(p, 'stack', false);
-              })
-              .join('') +
-            '</div>'
-          );
-        }
-        return pieceHtml(group.items[0], group.type === 'feature' ? 'feature' : 'ledger', !!group.flip);
-      })
-      .join('');
+    return (
+      '<div class="shop-rail">' +
+      '<div class="shop-rail__nav">' +
+      '<button type="button" class="shop-rail__btn" data-dir="-1" aria-label="Previous pieces">Prev</button>' +
+      '<button type="button" class="shop-rail__btn" data-dir="1" aria-label="Next pieces">Next</button>' +
+      '</div>' +
+      '<div class="shop-rail__track" tabindex="0" role="region" aria-label="Pieces">' +
+      items.map(railCardHtml).join('') +
+      '</div></div>'
+    );
+  }
+
+  var railResizeBound = false;
+
+  function bindShopRail(root) {
+    if (!root) return;
+    var track = root.querySelector('.shop-rail__track');
+    var prev = root.querySelector('[data-dir="-1"]');
+    var next = root.querySelector('[data-dir="1"]');
+    if (!track) return;
+    function distance() {
+      var card = track.querySelector('.shop-card');
+      if (!card) return Math.round(track.clientWidth * 0.8);
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 16;
+      return card.offsetWidth + gap;
+    }
+    function sync() {
+      var max = track.scrollWidth - track.clientWidth;
+      var overflow = max > 8;
+      var nav = root.querySelector('.shop-rail__nav');
+      if (nav) nav.hidden = !overflow;
+      if (!overflow) return;
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= max - 2;
+    }
+    function go(dir) {
+      track.scrollBy({ left: dir * distance(), behavior: 'auto' });
+    }
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    });
+    track.addEventListener('scroll', sync, { passive: true });
+    root._syncRail = sync;
+    if (!railResizeBound) {
+      railResizeBound = true;
+      addEventListener('resize', function () {
+        document.querySelectorAll('.shop-rail').forEach(function (el) {
+          if (el._syncRail) el._syncRail();
+        });
+      });
+    }
+    sync();
   }
 
   var activeFilter = 'all';
@@ -398,6 +447,7 @@
     var items = filteredProducts();
     updateCatalogChrome(items);
     container.innerHTML = galleryHtml(items);
+    bindShopRail(container.querySelector('.shop-rail'));
   }
 
   function renderFilters(nav) {
@@ -413,14 +463,9 @@
       (activeFilter === 'all' ? ' is-active' : '') +
       '" data-filter="all" aria-pressed="' +
       (activeFilter === 'all' ? 'true' : 'false') +
-      '">All <span class="shop-filter__n">' +
-      publishedProducts().length +
-      '</span></button>' +
+      '">All</button>' +
       cats
         .map(function (c) {
-          var n = publishedProducts().filter(function (p) {
-            return p.category === c.id;
-          }).length;
           var on = activeFilter === c.id;
           return (
             '<button type="button" class="shop-filter' +
@@ -431,9 +476,7 @@
             (on ? 'true' : 'false') +
             '">' +
             escapeHtml(c.label) +
-            ' <span class="shop-filter__n">' +
-            n +
-            '</span></button>'
+            '</button>'
           );
         })
         .join('');
@@ -448,6 +491,7 @@
         });
         rememberFilter(activeFilter);
         renderCatalogGrid(document.getElementById('shop-catalog-mount'));
+        btn.scrollIntoView({ inline: 'nearest', block: 'nearest' });
       });
     });
   }
@@ -595,22 +639,9 @@
       });
     }
 
-    var relatedHtml = '';
-    if (related.length === 1) {
-      relatedHtml =
-        '<div class="shop-pd__more"><h2>More from the collection</h2><div class="shop-related shop-related--single">' +
-        pieceHtml(related[0], 'stack', false) +
-        '</div></div>';
-    } else if (related.length > 1) {
-      relatedHtml =
-        '<div class="shop-pd__more"><h2>More from the collection</h2><div class="shop-pair shop-related">' +
-        related
-          .map(function (p) {
-            return pieceHtml(p, 'stack', false);
-          })
-          .join('') +
-        '</div></div>';
-    }
+    var relatedHtml = related.length
+      ? '<div class="shop-pd__more"><h2>More from the collection</h2>' + galleryHtml(related) + '</div>'
+      : '';
 
     var contactBtn = document.querySelector('#contact [data-wa-direct]');
     if (contactBtn) contactBtn.setAttribute('data-wa-msg', waProductMsg(product));
@@ -666,6 +697,8 @@
       '</div></div>' +
       relatedHtml +
       '</article>';
+
+    bindShopRail(mount.querySelector('.shop-rail'));
 
     var mainImg = mount.querySelector('#shop-pd-main-img');
     mount.querySelectorAll('.shop-pd__thumb').forEach(function (btn) {
