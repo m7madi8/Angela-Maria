@@ -1,15 +1,13 @@
 /** Site + shop settings — edit phone, currency and defaults here. */
 window.ANGILA_SITE = {
-  waPhone: '',
+  waPhone: '+972 50-696-1999',
   waDefault: "Hi Angela-Maria, I'd like to inquire about your handmade pieces.",
-  igHandle: ''
+  igHandle: 'angeliinaa6'
 };
 
 window.ANGILA_SHOP_CONFIG = {
-  currency: 'EUR',
-  locale: 'en-GB',
+  currency: 'ILS',
+  locale: 'en-IL',
   shopName: 'The Art of Stillness',
-  tagline: 'Made slowly, for rooms that like to stay still.',
-  heroImage: 'images/mini-store/12.JPG',
-  heroImageAlt: 'The collection'
+  tagline: 'Made slowly, for rooms that like to stay still.'
 };

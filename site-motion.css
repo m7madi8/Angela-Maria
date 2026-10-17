@@ -1,0 +1,102 @@
+/* Motion tokens — public static site */
+:root {
+  --motion-duration-fast: 180ms;
+  --motion-duration-base: 280ms;
+  --motion-duration-editorial: 0.78s;
+  --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-distance-subtle: 16px;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rv {
+    opacity: 0;
+    transform: translate3d(0, var(--motion-distance-subtle), 0);
+    transition:
+      opacity var(--motion-duration-editorial) var(--motion-ease-standard),
+      transform var(--motion-duration-editorial) var(--motion-ease-standard);
+  }
+
+  .rv.v {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #workshops .gt-card.rv,
+  #stillness .shop-pcard.rv,
+  .shop-page .shop-pcard.rv {
+    transform: none;
+    transition: opacity var(--motion-duration-editorial) var(--motion-ease-standard);
+  }
+
+  #workshops .gt-card.rv.v,
+  #stillness .shop-pcard.rv.v,
+  .shop-page .shop-pcard.rv.v {
+    transform: none;
+  }
+
+  .motion-img {
+    overflow: hidden;
+  }
+
+  .motion-img.rv .motion-img__inner,
+  .motion-img.rv img {
+    transform: translate3d(0, var(--motion-distance-subtle), 0) scale(1.02);
+    opacity: 0.92;
+    transition:
+      transform var(--motion-duration-editorial) var(--motion-ease-standard),
+      opacity var(--motion-duration-editorial) var(--motion-ease-standard);
+  }
+
+  .motion-img.rv.v .motion-img__inner,
+  .motion-img.rv.v img {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+
+}
+
+/* While the wheel is moving, skip heavy card hovers (they fight smooth scroll). */
+html.is-scrolling .gt-card:hover,
+html.is-scrolling a.gt-card--link:hover,
+html.is-scrolling .shop-pcard:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html.is-scrolling .gt-card:hover .gt-card__photo img,
+html.is-scrolling .shop-pcard:hover .shop-pcard__media img,
+html.is-scrolling .shop-atelier .shop-pcard--atelier:hover .shop-pcard__media img {
+  transform: none !important;
+  filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-photo img {
+    transform: none !important;
+  }
+}
+
+a.btn,
+a.nav-cta,
+a.hx-cta,
+a.hx-link,
+a.link {
+  transition:
+    color var(--motion-duration-fast) ease,
+    background var(--motion-duration-base) ease,
+    border-color var(--motion-duration-base) ease,
+    opacity var(--motion-duration-fast) ease;
+}

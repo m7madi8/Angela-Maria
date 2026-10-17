@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OfferingType {
+  handmade_product
+  workshop
+  live_class
+  recorded_course
+}
+
+enum OfferingStatus {
+  draft
+  published
+  archived
+}
+
+enum Locale {
+  en
+  ar
+}
+
+enum InventoryMode {
+  unknown
+  made_to_order
+  tracked
+}
+
+model Offering {
+  id           String               @id
+  type         OfferingType
+  status       OfferingStatus       @default(draft)
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+  translations OfferingTranslation[]
+  product      HandmadeProduct?
+
+  @@index([type, status])
+  @@map("offerings")
+}
+
+model OfferingTranslation {
+  id          String   @id
+  offeringId  String   @map("offering_id")
+  locale      Locale
+  name        String
+  description String
+  offering    Offering @relation(fields: [offeringId], references: [id], onDelete: Cascade)
+
+  @@unique([offeringId, locale])
+  @@map("offering_translations")
+}
+
+model HandmadeProduct {
+  slug             String               @id
+  offeringId       String               @unique @map("offering_id")
+  categoryKey      String               @map("category_key")
+  categoryLabel    String               @map("category_label")
+  priceMinorUnits  Int?                 @map("price_minor_units")
+  currency         String               @default("ILS") @db.Char(3)
+  stockQuantity    Int?                 @map("stock_quantity")
+  sourceAvailable  Boolean              @map("source_available")
+  inventoryMode    InventoryMode        @default(unknown) @map("inventory_mode")
+  featured         Boolean
+  layout           String
+  imageFocus       String?              @map("image_focus")
+  images           Json
+  offering         Offering             @relation(fields: [offeringId], references: [id], onDelete: Cascade)
+  translations     ProductTranslation[]
+
+  @@map("handmade_products")
+}
+
+model ProductTranslation {
+  id          String          @id
+  productSlug String          @map("product_slug")
+  locale      Locale
+  points      Json
+  materials   String?
+  dimensions  String?
+  care        String?
+  product     HandmadeProduct @relation(fields: [productSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([productSlug, locale])
+  @@map("product_translations")
+}
+
+model AdminSignInChallenge {
+  id         String    @id
+  email      String
+  tokenHash  String    @unique @map("token_hash")
+  expiresAt  DateTime  @map("expires_at")
+  consumedAt DateTime? @map("consumed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([email, createdAt])
+  @@map("admin_sign_in_challenges")
+}

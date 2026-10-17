@@ -1,5 +1,4 @@
 (function () {
-  var SITE = window.ANGILA_SITE || { waPhone: '', waDefault: '', igHandle: '' };
   var CFG = window.ANGILA_SHOP_CONFIG || {};
   var DATA = window.ANGILA_SHOP || { categories: [], products: [] };
 
@@ -18,71 +17,10 @@
     'images/mini-store/12.JPG': [1536, 2308]
   };
 
-  function phoneDigits() {
-    return SITE.waPhone ? String(SITE.waPhone).replace(/\D/g, '') : '';
-  }
-
-  function igName() {
-    return SITE.igHandle ? String(SITE.igHandle).replace(/^@/, '') : '';
-  }
-
-  function waLink(msg) {
-    var m = msg || SITE.waDefault;
-    var phone = phoneDigits();
-    var shop = document.body.classList.contains('shop-page');
-    if (!phone && shop) {
-      return document.getElementById('contact') ? '#contact' : '/#contact';
-    }
-    if (!phone && (!m || m === SITE.waDefault)) {
-      var c = document.getElementById('contact');
-      if (c) return '#contact';
-    }
-    var base = phone ? 'https://wa.me/' + phone : 'https://wa.me/';
-    return base + '?text=' + encodeURIComponent(m);
-  }
-
-  function igLink() {
-    var name = igName();
-    return name ? 'https://instagram.com/' + name : 'https://instagram.com/';
-  }
-
-  function contactLede(piece, phone) {
-    if (phone) return piece ? 'Ask me about ' + piece + '.' : 'A piece, a session, a question.';
-    return piece
-      ? 'Ask me about ' + piece + '. WhatsApp isn’t linked here yet.'
-      : 'Ask me directly. WhatsApp isn’t linked here yet.';
-  }
-
   function bindContact() {
-    var phone = phoneDigits();
-    var shop = document.body.classList.contains('shop-page');
-    var ig = igName();
-
-    document.querySelectorAll('[data-contact="wa"]').forEach(function (a) {
-      if (shop && a.hasAttribute('data-wa-direct')) a.hidden = !phone;
-      a.href = waLink(a.getAttribute('data-wa-msg'));
-      a.setAttribute('rel', 'noopener');
-      if (a.getAttribute('href').indexOf('http') === 0) a.setAttribute('target', '_blank');
-      else a.removeAttribute('target');
-    });
-
-    document.querySelectorAll('[data-contact="ig"]').forEach(function (a) {
-      if (shop) a.hidden = !ig;
-      a.href = igLink();
-      a.setAttribute('rel', 'noopener noreferrer');
-      if (ig) a.setAttribute('target', '_blank');
-    });
-
-    document.querySelectorAll('[data-inquire]').forEach(function (a) {
-      a.textContent = phone ? 'Inquire on WhatsApp' : 'Ask about this piece';
-    });
-
-    if (!shop) return;
-
-    var actions = document.getElementById('contact-actions');
-    if (actions) actions.hidden = !(phone || ig);
-    var lede = document.getElementById('contact-lede');
-    if (lede) lede.textContent = contactLede(document.body.getAttribute('data-inquiry') || '', phone);
+    if (typeof window.angilaBindContact === 'function') {
+      window.angilaBindContact();
+    }
   }
 
   function formatPrice(product) {
@@ -90,11 +28,11 @@
     try {
       return new Intl.NumberFormat(CFG.locale || 'en-GB', {
         style: 'currency',
-        currency: CFG.currency || 'EUR',
+        currency: CFG.currency || 'ILS',
         maximumFractionDigits: 0
       }).format(product.price);
     } catch (e) {
-      return product.price + ' ' + (CFG.currency || 'EUR');
+      return product.price + ' ' + (CFG.currency || 'ILS');
     }
   }
 
@@ -206,13 +144,21 @@
     var cls = 'shop-pcard rv' + (product.available === false ? ' shop-pcard--soon' : '');
     if (product.layout === 'feature') cls += ' shop-pcard--feature';
     if (opts.compact) cls += ' shop-pcard--compact';
+    if (opts.atelier) cls += ' shop-pcard--atelier';
+
+    var desc =
+      opts.atelier && product.shortDescription
+        ? '<p class="shop-pcard__desc">' + escapeHtml(product.shortDescription) + '</p>'
+        : product.shortDescription
+          ? '<p class="shop-pcard__desc">' + escapeHtml(product.shortDescription) + '</p>'
+          : '';
 
     return (
       '<a class="' +
       cls +
       '" href="' +
       productUrl(product.slug) +
-      '">' +
+      '" role="listitem">' +
       '<div class="shop-pcard__media">' +
       '<img src="' +
       escapeHtml(img) +
@@ -229,9 +175,7 @@
       '<h3>' +
       escapeHtml(product.name) +
       '</h3>' +
-      '<p class="shop-pcard__desc">' +
-      escapeHtml(product.shortDescription || '') +
-      '</p>' +
+      desc +
       '<div class="shop-pcard__foot">' +
       '<span class="shop-pcard__price">' +
       escapeHtml(formatPrice(product)) +
@@ -335,6 +279,27 @@
     );
   }
 
+  function catalogGridHtml(items) {
+    if (!items.length) {
+      return '<p class="shop-empty">Nothing here yet. <a href="#contact">Ask me</a>.</p>';
+    }
+    var atelier = document.body.classList.contains('shop-atelier');
+    var gridClass = atelier
+      ? 'shop-atelier-grid'
+      : 'shop-editorial-grid shop-catalog-editorial';
+    return (
+      '<div class="' +
+      gridClass +
+      '" role="list">' +
+      items
+        .map(function (p) {
+          return productCardHtml(p, atelier ? { atelier: true } : undefined);
+        })
+        .join('') +
+      '</div>'
+    );
+  }
+
   function galleryHtml(items) {
     if (!items.length) {
       return '<p class="shop-empty">Nothing here yet. <a href="#contact">Ask me</a>.</p>';
@@ -345,7 +310,7 @@
       '<button type="button" class="shop-rail__btn" data-dir="-1" aria-label="Previous pieces">Prev</button>' +
       '<button type="button" class="shop-rail__btn" data-dir="1" aria-label="Next pieces">Next</button>' +
       '</div>' +
-      '<div class="shop-rail__track" tabindex="0" role="region" aria-label="Pieces">' +
+      '<div class="shop-rail__track" tabindex="0" role="region" aria-label="Pieces" data-lenis-prevent>' +
       items.map(railCardHtml).join('') +
       '</div></div>'
     );
@@ -446,8 +411,8 @@
     if (!container) return;
     var items = filteredProducts();
     updateCatalogChrome(items);
-    container.innerHTML = galleryHtml(items);
-    bindShopRail(container.querySelector('.shop-rail'));
+    container.innerHTML = catalogGridHtml(items);
+    observeReveal(container.querySelectorAll('.shop-pcard.rv:not(.v)'));
   }
 
   function renderFilters(nav) {
@@ -534,22 +499,54 @@
     });
   }
 
-  function renderFeatured(container) {
-    if (!container) return;
+  function featuredProducts(limit) {
     var items = publishedProducts().filter(function (p) {
       return p.featured;
     });
     if (!items.length) items = publishedProducts();
-    items = items.slice(0, 3);
-    container.innerHTML =
-      '<div class="shop-editorial-grid stillness-grid">' +
-      items
-        .map(function (p) {
-          return productCardHtml(p);
+    return items.slice(0, limit || items.length);
+  }
+
+  function renderStillnessHome() {
+    var track = document.getElementById('stillness-featured');
+    if (!track || track.hasAttribute('data-static')) return;
+    var showcase = track.querySelector('.stillness-showcase');
+    if (!showcase) return;
+    var items = featuredProducts(3);
+    showcase.innerHTML = items
+      .map(function (p) {
+        return productCardHtml(p, { compact: true });
+      })
+      .join('');
+    var dots = document.getElementById('stillness-dots');
+    if (dots) {
+      dots.innerHTML = items
+        .map(function (_, i) {
+          return '<span' + (i === 0 ? ' class="is-on"' : '') + '></span>';
         })
-        .join('') +
-      '</div>';
-    observeReveal(container.querySelectorAll('.rv'));
+        .join('');
+    }
+    observeReveal(showcase.querySelectorAll('.shop-pcard.rv:not(.v)'));
+    if (typeof window.angilaBindStillnessRail === 'function') {
+      window.angilaBindStillnessRail();
+    }
+  }
+
+  function updateShopStory() {
+    var note = document.getElementById('shop-story-note');
+    if (note && CFG.tagline) note.textContent = CFG.tagline;
+  }
+
+  function updateShopHero() {
+    var lede = document.getElementById('shop-hero-lede');
+    if (lede && CFG.tagline) lede.textContent = CFG.tagline;
+    var img = document.getElementById('shop-hero-img');
+    if (img && CFG.heroImage) {
+      img.src = CFG.heroImage;
+      if (CFG.heroImageAlt) img.alt = CFG.heroImageAlt;
+    }
+    updateHeroMeta();
+    updateShopStory();
   }
 
   function renderProductPage(mount) {
@@ -852,11 +849,18 @@
     });
     if (nav) {
       var pinNav = document.body.classList.contains('product-page');
-      var syncNav = function () {
-        nav.classList.toggle('s', pinNav || scrollY > 60);
+      var syncNav = function (y) {
+        var sy = typeof y === 'number' ? y : window.scrollY;
+        nav.classList.toggle('s', pinNav || sy > 60);
       };
-      syncNav();
-      addEventListener('scroll', syncNav, { passive: true });
+      syncNav(typeof window.angilaScrollY === 'function' ? window.angilaScrollY() : window.scrollY);
+      if (typeof window.angilaOnScroll === 'function') {
+        window.angilaOnScroll(syncNav);
+      } else {
+        addEventListener('scroll', function () {
+          syncNav(window.scrollY);
+        }, { passive: true });
+      }
     }
   }
 
@@ -877,7 +881,12 @@
       renderFilters(filters);
     }
 
-    updateHeroMeta();
+    if (document.body.classList.contains('shop-atelier')) {
+      updateShopHero();
+    } else {
+      updateHeroMeta();
+      updateShopStory();
+    }
 
     var catalog = document.getElementById('shop-catalog-mount');
     if (catalog) {
@@ -885,8 +894,7 @@
       writeShopJsonLd();
     }
 
-    var featured = document.getElementById('stillness-featured');
-    if (featured && !featured.hasAttribute('data-static')) renderFeatured(featured);
+    renderStillnessHome();
 
     var productMount = document.getElementById('product-mount');
     if (productMount) renderProductPage(productMount);
