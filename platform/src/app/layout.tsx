@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Fraunces, Hanken_Grotesk, Noto_Naskh_Arabic } from 'next/font/google';
+import { El_Messiri, Fraunces, Hanken_Grotesk, Tajawal } from 'next/font/google';
 import { headers } from 'next/headers';
 import { direction, isLocale, type Locale } from '@/i18n/locales';
 import './globals.css';
@@ -16,10 +16,16 @@ const latin = Hanken_Grotesk({
   variable: '--font-latin',
 });
 
-const arabic = Noto_Naskh_Arabic({
+const arabic = Tajawal({
   subsets: ['arabic'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '700'],
   variable: '--font-arabic',
+});
+
+const arabicDisplay = El_Messiri({
+  subsets: ['arabic'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-arabic-display',
 });
 
 export const dynamic = 'force-dynamic';
@@ -35,7 +41,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const locale: Locale = requested && isLocale(requested) ? requested : 'en';
 
   return (
-    <html lang={locale} dir={direction(locale)} className={`${display.variable} ${latin.variable} ${arabic.variable}`}>
+    <html
+      lang={locale}
+      dir={direction(locale)}
+      className={`${display.variable} ${latin.variable} ${arabic.variable} ${arabicDisplay.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

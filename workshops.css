@@ -12,7 +12,7 @@
 
 html{scroll-behavior:auto;scroll-padding-top:5rem;background:var(--char);-webkit-text-size-adjust:100%;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--olive) var(--char);overscroll-behavior-y:none}
 
-body{margin:0;font:400 1rem/1.65 var(--sans);color:var(--char);background:var(--paper);overflow-x:hidden;overscroll-behavior-y:none}
+body{margin:0;font:400 1rem/1.65 var(--sans);color:var(--char);background:#fff;overflow-x:hidden;overscroll-behavior-y:none}
 
 *{scrollbar-width:thin;scrollbar-color:var(--olive) rgba(41,42,39,.95)}
 
@@ -48,7 +48,7 @@ main{overflow-x:clip}
 
 section{position:relative;padding:clamp(5.5rem,11vw,9rem) 0}
 
-.light{background:var(--paper)}.dark{background:var(--forest);color:var(--ivory)}.earth{background:var(--earth);color:var(--ivory)}
+.light{background:transparent}.dark{background:var(--forest);color:var(--ivory)}.earth{background:var(--earth);color:var(--ivory)}
 
 .cv{
 

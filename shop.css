@@ -1489,7 +1489,7 @@ html[dir='rtl'] .shop-pcard__foot {
 
 .shop-page .shop-story {
   padding: clamp(1.25rem, 3vw, 2rem) 0 clamp(2rem, 4vw, 3rem);
-  background: var(--paper);
+  background: transparent;
   border-bottom: 1px solid rgba(105, 81, 62, 0.1);
 }
 
@@ -1947,7 +1947,7 @@ html[dir='rtl'] .shop-page .shop-catalog__bar {
 
 .shop-atelier .shop-prelude {
   padding: clamp(2rem, 4.5vw, 3rem) 0;
-  background: var(--paper);
+  background: transparent;
   border-bottom: 1px solid rgba(105, 81, 62, 0.1);
 }
 
@@ -2014,9 +2014,9 @@ html[dir='rtl'] .shop-page .shop-catalog__bar {
   margin-bottom: 0.5rem;
   background: linear-gradient(
     180deg,
-    var(--paper) 0%,
-    var(--paper) 78%,
-    rgba(232, 229, 220, 0) 100%
+    #fff 0%,
+    #fff 78%,
+    rgba(255, 255, 255, 0) 100%
   );
   border-bottom: 1px solid rgba(105, 81, 62, 0.08);
 }

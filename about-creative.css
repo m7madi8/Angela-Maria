@@ -1,0 +1,19 @@
+/* About — editorial, multi-faceted (not corporate bio) */
+body[data-i18n-page='about'] .ed-section:first-of-type {
+  min-height: min(70vh, 32rem);
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: clamp(3rem, 8vw, 5rem);
+}
+body[data-i18n-page='about'] #journey .ed-title,
+body[data-i18n-page='about'] #connects .ed-title,
+body[data-i18n-page='about'] #about-me .ed-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  max-width: 16ch;
+}
+body[data-i18n-page='about'] #connects {
+  background: linear-gradient(180deg, var(--earth, #69513e) 0%, #5c4838 100%);
+}
+body[data-i18n-page='about'] #about-me .ed-photo {
+  border-radius: 42% 58% 48% 52% / 38% 42% 58% 62%;
+}

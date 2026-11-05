@@ -5,6 +5,19 @@
 (function () {
   var SITE = window.ANGILA_SITE || { waPhone: '', waDefault: '', igHandle: '' };
 
+  function t(key) {
+    if (typeof window.angilaT === 'function') return window.angilaT(key);
+    return '';
+  }
+
+  function fill(template, vars) {
+    var out = template;
+    Object.keys(vars).forEach(function (k) {
+      out = out.split('{' + k + '}').join(vars[k]);
+    });
+    return out;
+  }
+
   function phoneDigits() {
     return SITE.waPhone ? String(SITE.waPhone).replace(/\D/g, '') : '';
   }
@@ -34,56 +47,50 @@
     if (anchor.hasAttribute('data-wa-direct')) return true;
     if (anchor.hasAttribute('data-inquire')) return true;
     var label = linkLabel(anchor);
-    if (/whatsapp/i.test(label)) return true;
+    if (/whatsapp|واتساب/i.test(label)) return true;
     return false;
   }
 
   function scrollOnlyContact(anchor) {
     if (anchor.closest('#dock')) return true;
     if (anchor.closest('#nav')) return true;
-    var label = linkLabel(anchor);
-    return (
-      label === 'Book a session' ||
-      label === 'Book a private session' ||
-      label === 'Ask about courses' ||
-      label === 'Say hello' ||
-      label === 'Ask about this piece' ||
-      label === 'Ask about a piece'
-    );
+    if (anchor.hasAttribute('data-scroll-contact')) return true;
+    return false;
   }
 
   function contactLede(piece, phone, ig) {
     if (phone) {
-      if (piece) return 'Ask me about ' + piece + '.';
+      if (piece) return fill(t('contact.lede.piece') || 'Ask me about {piece}.', { piece: piece });
       if (document.body.classList.contains('shop-atelier')) {
-        return 'Message me about any piece — we confirm details together. No cart here.';
+        return t('contact.lede.shop') || 'Message me about any piece — we confirm details together. No cart here.';
       }
-      return 'A piece, a session, a question.';
+      return t('contact.lede.general') || 'A piece, a session, a question.';
     }
     if (ig) {
       return piece
-        ? 'Ask me about ' + piece + '. Say hello on Instagram below.'
-        : 'Say hello on Instagram below.';
+        ? fill(t('contact.lede.pieceIg') || 'Ask me about {piece}. Say hello on Instagram below.', { piece: piece })
+        : t('contact.igBelow') || 'Say hello on Instagram below.';
     }
     return piece
-      ? 'Ask me about ' + piece + '. WhatsApp isn’t linked here yet.'
-      : 'WhatsApp isn’t linked here yet.';
+      ? fill(t('contact.lede.pieceNoWa') || 'Ask me about {piece}. WhatsApp isn’t linked here yet.', { piece: piece })
+      : t('contact.waNotLinked') || 'WhatsApp isn’t linked here yet.';
   }
 
   function syncLedes(phone, ig) {
     var piece = document.body.getAttribute('data-inquiry') || '';
     var shopLede = document.getElementById('contact-lede');
-    if (shopLede) {
+    if (shopLede && !shopLede.hasAttribute('data-i18n')) {
       shopLede.textContent = contactLede(piece, phone, ig);
     }
     document.querySelectorAll('#contact .lede').forEach(function (el) {
       if (el.id === 'contact-lede') return;
+      if (el.hasAttribute('data-i18n')) return;
       if (phone) return;
       if (ig) {
-        el.textContent = 'Say hello on Instagram below.';
+        el.textContent = t('contact.igBelow') || 'Say hello on Instagram below.';
         return;
       }
-      el.textContent = 'WhatsApp isn’t linked here yet.';
+      el.textContent = t('contact.waNotLinked') || 'WhatsApp isn’t linked here yet.';
     });
   }
 
@@ -98,7 +105,9 @@
         a.href = '#contact';
         a.removeAttribute('target');
         a.removeAttribute('rel');
-        a.textContent = 'Ask about this piece';
+        if (!a.hasAttribute('data-i18n')) {
+          a.textContent = t('contact.askThisPiece') || 'Ask about this piece';
+        }
         return;
       }
 
@@ -127,8 +136,8 @@
       a.href = '#contact';
       a.removeAttribute('target');
       a.removeAttribute('rel');
-      if (!phone && (linkLabel(a) === 'Ask on WhatsApp' || linkLabel(a) === 'Book on WhatsApp')) {
-        a.textContent = 'Say hello';
+      if (!phone && a.hasAttribute('data-wa-fallback')) {
+        a.textContent = t('contact.sayHelloShort') || 'Say hello';
       }
       if (!scrollOnlyContact(a) && !a.closest('#contact')) {
         a.href = '#contact';
@@ -149,7 +158,9 @@
     });
 
     document.querySelectorAll('[data-inquire]').forEach(function (a) {
-      if (phone) a.textContent = 'Inquire on WhatsApp';
+      if (phone && !a.hasAttribute('data-i18n')) {
+        a.textContent = t('contact.inquireWhatsapp') || 'Inquire on WhatsApp';
+      }
     });
 
     document.querySelectorAll('#contact .contact-social, .nav-sheet__social').forEach(function (box) {
@@ -164,9 +175,14 @@
 
   window.angilaBindContact = bindContact;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bindContact);
-  } else {
+  function bootContact() {
     bindContact();
+  }
+
+  document.addEventListener('angilaI18nReady', bootContact);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootContact);
+  } else {
+    bootContact();
   }
 })();

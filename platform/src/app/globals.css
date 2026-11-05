@@ -22,8 +22,21 @@ body {
   line-height: 1.6;
 }
 
-html[dir="rtl"] body {
-  font-family: var(--font-arabic), var(--font-latin), "Segoe UI", sans-serif;
+html[lang="ar"][dir="rtl"] body {
+  font-family: var(--font-arabic), "Segoe UI", sans-serif;
+  font-weight: 400;
+}
+
+html[lang="ar"][dir="rtl"] h1,
+html[lang="ar"][dir="rtl"] h2,
+html[lang="ar"][dir="rtl"] h3,
+html[lang="ar"][dir="rtl"] .display-xl,
+html[lang="ar"][dir="rtl"] .display-l,
+html[lang="ar"][dir="rtl"] .display-m,
+html[lang="ar"][dir="rtl"] .display-s {
+  font-family: var(--font-arabic-display), var(--font-arabic), "Segoe UI", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 a { color: inherit; }

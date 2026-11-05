@@ -1,0 +1,216 @@
+/* Homepage narrative — From Movement to Stillness */
+:root {
+  --story-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --story-chapter-w: clamp(4.75rem, 9vw, 6rem);
+  --story-chapter-gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+body.home-narrative main {
+  --story-pad: var(--pad, clamp(1.25rem, 5vw, 5rem));
+}
+
+.story-chapter {
+  display: none;
+  font: 500 0.65rem var(--sans, system-ui);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--olive, #7d8668);
+}
+.story-chapter__index {
+  display: block;
+  font: 300 clamp(2.5rem, 5vw, 4rem) var(--display, Georgia);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--forest, #24382c);
+  opacity: 0.35;
+}
+.story-chapter__name {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--earth, #69513e);
+}
+
+@media (min-width: 900px) {
+  .story-panel {
+    position: relative;
+  }
+
+  /* Column for chapter index + content — avoids overlap with large titles */
+  body.home-narrative .story-panel:not(#hero) {
+    display: grid;
+    grid-template-columns: var(--story-chapter-w) minmax(0, 1fr);
+    column-gap: var(--story-chapter-gap);
+    align-items: start;
+    padding-inline: max(var(--story-pad), calc((100vw - 90rem) / 2 + var(--story-pad)));
+  }
+
+  body.home-narrative .story-panel:not(#hero) > .story-chapter {
+    display: block;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 2;
+    pointer-events: none;
+    align-self: start;
+    padding-top: 0.15rem;
+  }
+
+  body.home-narrative .story-panel:not(#hero) > .wrap,
+  body.home-narrative .story-panel:not(#hero) > .ws-programs {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-left: 0;
+  }
+
+  #hero.hx > .story-chapter {
+    display: block;
+    position: absolute;
+    left: var(--story-pad);
+    top: calc(5.5rem + env(safe-area-inset-top, 0px));
+    width: var(--story-chapter-w);
+    color: var(--grey);
+    z-index: 3;
+    pointer-events: none;
+  }
+  #hero.hx .hx-text {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  #hero.hx:not(.hero-soft) .story-chapter__index {
+    color: var(--ivory);
+    opacity: 0.45;
+  }
+  #hero.hx:not(.hero-soft) .story-chapter__name {
+    color: var(--grey);
+  }
+}
+
+/* Reconnection — editorial philosophy */
+.home-philosophy.story-panel--calm {
+  padding: clamp(4.5rem, 11vw, 8rem) 0;
+  background: transparent;
+}
+.home-philosophy__grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  max-width: 52rem;
+}
+@media (min-width: 768px) {
+  .home-philosophy__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: end;
+    max-width: 72rem;
+  }
+  .home-philosophy__quote {
+    grid-column: 1 / -1;
+    font-size: clamp(1.65rem, 3.8vw, 2.75rem);
+    line-height: 1.22;
+    max-width: 22ch;
+  }
+  .home-philosophy__body {
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Movement — workshops emphasis */
+#workshops.story-panel--move {
+  position: relative;
+}
+#workshops.story-panel--move .ws-head h2 {
+  font-size: clamp(2.65rem, 7vw, 5rem);
+  max-width: 12ch;
+}
+
+/* Creation — stillness */
+#stillness.story-panel--create {
+  padding-top: clamp(4rem, 9vw, 6.5rem);
+  background: transparent;
+}
+#stillness.story-panel--create .stillness-head h2 {
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  max-width: 14ch;
+}
+#stillness .stillness-showcase {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Invitation — contact — height follows content; #contact.cv handles curve padding */
+#contact.story-panel--invite {
+  min-height: 0;
+  padding: 0;
+}
+@media (min-width: 900px) {
+  body.home-narrative #contact.story-panel--invite {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: min(50vh, 32rem);
+  }
+  body.home-narrative #contact.story-panel--invite > .wrap {
+    align-self: center;
+    width: 100%;
+  }
+  #contact.story-panel--invite .disp {
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    max-width: 10ch;
+  }
+  #contact.story-panel--invite .sign {
+    margin-top: 1.35rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+}
+@media (max-width: 899px) {
+  #contact.story-panel--invite .sign {
+    margin-top: 0.65rem;
+    font-size: clamp(1.15rem, 4.2vw, 1.45rem);
+    opacity: 0.72;
+  }
+}
+
+/* Nav — scroll state */
+#nav.nav--elevated .nav-bar {
+  background: rgba(36, 56, 44, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(242, 240, 232, 0.08);
+}
+#nav .nav-bar {
+  transition: background 0.45s var(--story-ease), box-shadow 0.45s var(--story-ease);
+}
+
+/* Scroll progress (home) */
+.story-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 80;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--olive), var(--ivory));
+  opacity: 0.85;
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-progress {
+    display: none;
+  }
+}
+
+/* View transitions */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+  animation-timing-function: var(--story-ease);
+}

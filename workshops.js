@@ -1,4 +1,11 @@
 (function () {
+  function menuAriaLabel(open) {
+    if (typeof window.angilaT === 'function') {
+      return window.angilaT(open ? 'nav.closeMenu' : 'nav.openMenu');
+    }
+    return open ? 'Close menu' : 'Open menu';
+  }
+
   var nav = document.getElementById('nav');
   var sheet = document.getElementById('nav-sheet');
   var menuBtn = document.getElementById('menu-btn');
@@ -12,7 +19,7 @@
       sheet.classList.remove('closing');
       sheet.classList.add('o');
       menuBtn.setAttribute('aria-expanded', 'true');
-      menuBtn.setAttribute('aria-label', 'Close menu');
+      menuBtn.setAttribute('aria-label', menuAriaLabel(true));
       sheet.setAttribute('aria-hidden', 'false');
       document.body.classList.add('menu-open');
       var f = sheet.querySelector('.nav-sheet__list a');
@@ -21,7 +28,7 @@
     }
     if (!sheet.classList.contains('o') || menuClosing) return;
     menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.setAttribute('aria-label', 'Open menu');
+    menuBtn.setAttribute('aria-label', menuAriaLabel(false));
     document.body.classList.remove('menu-open');
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       sheet.classList.remove('o', 'closing');

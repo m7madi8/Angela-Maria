@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="site-i18n-locale.js"></script>
+<link rel="stylesheet" href="site-i18n-rtl.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#24382C">
 <title>In-person gatherings — Angela-Maria</title>
@@ -17,15 +19,16 @@
 <link rel="stylesheet" href="site-motion.css">
 <noscript><style>.rv{opacity:1;transform:none}</style></noscript>
 </head>
-<body>
+<body data-i18n-page="workshops">
 <a class="skip" href="#main">Skip to content</a>
 
 <header id="nav" aria-label="Site">
 <div class="nav-bar wrap">
 <a class="logo logo--mark" href="/" aria-label="Angela — Yoga and Movement"><img src="logo-light.svg" alt="" width="1631" height="1073"></a>
 <div class="nav-actions">
+<div class="lang-switch" id="lang-switch" hidden></div>
 <nav class="nav-links" aria-label="Primary">
-<a href="workshops.html" aria-current="page">Workshops</a><a href="/#courses">Courses</a><a href="/#oneone">1:1</a><a href="shop.html">Shop</a><a href="/#about">About</a>
+<a href="yoga.html">Yoga</a><a href="workshops.html" aria-current="page">Experiences</a><a href="shop.html">Shop</a><a href="about.html">About</a>
 </nav>
 <a class="nav-cta" href="#contact" data-contact="wa">Book a session</a>
 <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-sheet" aria-label="Open menu">
@@ -40,11 +43,11 @@
 <div class="nav-sheet__panel">
 <div class="nav-sheet__inner">
 <nav class="nav-sheet__list" aria-label="Mobile">
-<a href="workshops.html" aria-current="page">Workshops</a>
-<a href="/#courses">Online courses</a>
-<a href="/#oneone">1:1 online</a>
+<a href="yoga.html">Yoga &amp; movement</a>
+<a href="workshops.html" aria-current="page">Experiences</a>
 <a href="shop.html">Shop</a>
-<a href="/#about">About</a>
+<a href="about.html">About</a>
+<a href="/#oneone">1:1 online</a>
 <a href="#contact">Say hello</a>
 </nav>
 <div class="nav-sheet__foot">
@@ -156,6 +159,10 @@
 
 <script src="vendor/lenis.min.js"></script>
 <script src="site-scroll.js"></script>
+<script src="site-i18n-strings.js"></script>
+<script src="site-i18n-bindings.js"></script>
+<script src="site-i18n-wa.js"></script>
+<script src="site-i18n.js"></script>
 <script src="shop-config.js"></script>
 <script src="site-contact.js"></script>
 <script src="workshops.js"></script>

@@ -2,6 +2,24 @@
   var CFG = window.ANGILA_SHOP_CONFIG || {};
   var DATA = window.ANGILA_SHOP || { categories: [], products: [] };
 
+  function shopLocale() {
+    return window.angilaLocale === 'ar' ? 'ar' : 'en';
+  }
+
+  function shopT(key) {
+    var strings = window.ANGILA_SHOP_STRINGS || {};
+    var pack = strings[shopLocale()] || strings.en || {};
+    if (pack[key] != null) return pack[key];
+    return (strings.en && strings.en[key]) || key;
+  }
+
+  function localizedProduct(product) {
+    if (!product || shopLocale() !== 'ar') return product;
+    var bank = window.ANGILA_SHOP_I18N && window.ANGILA_SHOP_I18N.ar;
+    if (!bank || !bank.products || !bank.products[product.slug]) return product;
+    return Object.assign({}, product, bank.products[product.slug]);
+  }
+
   var IMAGE_SIZE = {
     'images/mini-store/01.JPG': [1536, 2048],
     'images/mini-store/02.JPG': [1536, 2048],
@@ -24,9 +42,10 @@
   }
 
   function formatPrice(product) {
-    if (product.price == null || product.price === '') return 'Price on request';
+    if (product.price == null || product.price === '') return shopT('priceOnRequest');
     try {
-      return new Intl.NumberFormat(CFG.locale || 'en-GB', {
+      var fmtLocale = shopLocale() === 'ar' ? 'ar-IL' : CFG.locale || 'en-GB';
+      return new Intl.NumberFormat(fmtLocale, {
         style: 'currency',
         currency: CFG.currency || 'ILS',
         maximumFractionDigits: 0
@@ -37,19 +56,26 @@
   }
 
   function productUrl(slug) {
-    return 'product.html?slug=' + encodeURIComponent(slug);
+    var path = 'product.html?slug=' + encodeURIComponent(slug);
+    if (window.angilaI18n && window.angilaI18n.localizeHref) {
+      return window.angilaI18n.localizeHref(path, shopLocale());
+    }
+    return path;
   }
 
   function getProduct(slug) {
-    return DATA.products.find(function (p) {
+    var raw = DATA.products.find(function (p) {
       return p.slug === slug;
     });
+    return raw ? localizedProduct(raw) : null;
   }
 
   function publishedProducts() {
-    return DATA.products.filter(function (p) {
-      return p.published !== false;
-    });
+    return DATA.products
+      .filter(function (p) {
+        return p.published !== false;
+      })
+      .map(localizedProduct);
   }
 
   function categoriesWithProducts() {
@@ -62,6 +88,14 @@
   }
 
   function categoryLabel(id) {
+    if (shopLocale() === 'ar') {
+      var arCat =
+        window.ANGILA_SHOP_I18N &&
+        window.ANGILA_SHOP_I18N.ar &&
+        window.ANGILA_SHOP_I18N.ar.categories &&
+        window.ANGILA_SHOP_I18N.ar.categories[id];
+      if (arCat && arCat.label) return arCat.label;
+    }
     var c = DATA.categories.find(function (x) {
       return x.id === id;
     });
@@ -69,25 +103,35 @@
   }
 
   function countLabel(n) {
-    return n + (n === 1 ? ' piece' : ' pieces');
+    return n + (n === 1 ? shopT('piece') : shopT('pieces'));
   }
 
   function catalogIntro(filterId) {
     if (!filterId || filterId === 'all') {
-      return 'Each piece, one of a kind. Ask me.';
+      return shopT('catalogIntroAll');
+    }
+    if (shopLocale() === 'ar') {
+      var arIntro =
+        window.ANGILA_SHOP_I18N &&
+        window.ANGILA_SHOP_I18N.ar &&
+        window.ANGILA_SHOP_I18N.ar.categories &&
+        window.ANGILA_SHOP_I18N.ar.categories[filterId];
+      if (arIntro && arIntro.intro) return arIntro.intro;
     }
     var cat = DATA.categories.find(function (c) {
       return c.id === filterId;
     });
-    return cat && cat.intro
-      ? cat.intro
-      : 'Ask me.';
+    return cat && cat.intro ? cat.intro : shopT('catalogIntroAsk');
   }
 
   function waProductMsg(product) {
+    var p = localizedProduct(product);
+    if (shopLocale() === 'ar') {
+      return 'مرحبًا Angela-Maria، أود الاستفسار عن «' + p.name + '» من فن السكون.';
+    }
     return (
       "Hi Angela-Maria, I'd like to inquire about \"" +
-      product.name +
+      p.name +
       '" from The Art of Stillness.'
     );
   }
@@ -139,8 +183,8 @@
     var img = product.images && product.images[0] ? product.images[0] : '';
     var avail =
       product.available === false
-        ? '<span class="shop-pcard__link">Currently unavailable</span>'
-        : '<span class="shop-pcard__link">View piece →</span>';
+        ? '<span class="shop-pcard__link">' + escapeHtml(shopT('unavailable')) + '</span>'
+        : '<span class="shop-pcard__link">' + escapeHtml(shopT('viewPieceArrow')) + '</span>';
     var cls = 'shop-pcard rv' + (product.available === false ? ' shop-pcard--soon' : '');
     if (product.layout === 'feature') cls += ' shop-pcard--feature';
     if (opts.compact) cls += ' shop-pcard--compact';
@@ -209,7 +253,7 @@
     if (product.available === false) cls += ' shop-piece--soon';
     var dims = size ? ' width="' + size[0] + '" height="' + size[1] + '"' : '';
     var blurb = product.shortDescription || '';
-    var view = product.available === false ? 'Currently unavailable' : 'View piece';
+    var view = product.available === false ? shopT('unavailable') : shopT('viewPiece');
     var alt = product.name;
 
     return (
@@ -250,7 +294,7 @@
   }
 
   function railPrice(product) {
-    if (product.price == null || product.price === '') return 'On request';
+    if (product.price == null || product.price === '') return shopT('onRequest');
     return formatPrice(product);
   }
 
@@ -389,7 +433,7 @@
     var lede = document.getElementById('shop-catalog-lede');
     if (lede) lede.textContent = catalogIntro(activeFilter);
     var status = document.getElementById('shop-status');
-    if (status) status.textContent = countLabel(items.length) + ' shown';
+    if (status) status.textContent = countLabel(items.length) + shopT('shown');
   }
 
   function updateHeroMeta() {
@@ -397,14 +441,14 @@
     if (!el) return;
     var items = publishedProducts();
     if (!items.length) {
-      el.textContent = 'Pieces are being prepared';
+      el.textContent = shopT('preparing');
       return;
     }
     var priced = items.some(function (p) {
       return p.price != null && p.price !== '';
     });
     var label = countLabel(items.length);
-    el.textContent = priced ? label : label + ' · Price on request';
+    el.textContent = priced ? label : label + shopT('priceSuffix');
   }
 
   function renderCatalogGrid(container) {
@@ -428,7 +472,9 @@
       (activeFilter === 'all' ? ' is-active' : '') +
       '" data-filter="all" aria-pressed="' +
       (activeFilter === 'all' ? 'true' : 'false') +
-      '">All</button>' +
+      '">' +
+      escapeHtml(shopT('filterAll')) +
+      '</button>' +
       cats
         .map(function (c) {
           var on = activeFilter === c.id;
@@ -440,7 +486,7 @@
             '" aria-pressed="' +
             (on ? 'true' : 'false') +
             '">' +
-            escapeHtml(c.label) +
+            escapeHtml(categoryLabel(c.id)) +
             '</button>'
           );
         })
@@ -508,6 +554,12 @@
   }
 
   function renderStillnessHome() {
+    if (document.getElementById('stillness-rail-track')) {
+      if (typeof window.angilaBuildStillnessRail === 'function') {
+        window.angilaBuildStillnessRail(featuredProducts(4));
+      }
+      return;
+    }
     var track = document.getElementById('stillness-featured');
     if (!track || track.hasAttribute('data-static')) return;
     var showcase = track.querySelector('.stillness-showcase');
@@ -532,9 +584,36 @@
     }
   }
 
+  function productAvailabilityLabel(product) {
+    if (product.available === false) return shopT('unavailable');
+    if (product.fulfillment === 'custom') return shopT('madeToOrder');
+    return shopT('availableReady');
+  }
+
   function updateShopStory() {
+    if (document.getElementById('shop-story-body')) return;
     var note = document.getElementById('shop-story-note');
     if (note && CFG.tagline) note.textContent = CFG.tagline;
+  }
+
+  function bindCustomOrder() {
+    var form = document.getElementById('custom-order-form');
+    if (!form) return;
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var btn = document.getElementById('custom-order-submit');
+      var notesEl = document.getElementById('custom-notes');
+      var notes = notesEl && notesEl.value ? String(notesEl.value).trim() : '';
+      var base =
+        (btn && btn.getAttribute('data-wa-msg')) ||
+        (typeof window.angilaT === 'function' ? window.angilaT('wa.custom') : '') ||
+        "Hi Angela-Maria, I'd like to request a custom dream catcher from The Art of Stillness.";
+      var msg = base + (notes ? '\n\n' + notes : '');
+      var site = window.ANGILA_SITE || {};
+      var phone = site.waPhone ? String(site.waPhone).replace(/\D/g, '') : '';
+      if (!phone) return;
+      window.location.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+    });
   }
 
   function updateShopHero() {
@@ -557,14 +636,23 @@
     var product = slug ? getProduct(slug) : null;
 
     if (!product || product.published === false) {
-      document.title = 'Piece not found — Angela-Maria';
+      document.title = shopT('pieceNotFoundTitle');
       document.body.removeAttribute('data-inquiry');
+      var shopHref = window.angilaI18n ? window.angilaI18n.localizeHref('shop.html', shopLocale()) : 'shop.html';
       mount.innerHTML =
         '<div class="wrap shop-not-found">' +
-        '<h1>This piece isn’t here.</h1>' +
-        '<p class="lede" style="margin:1rem auto 0">It may have sold. Browse the collection.</p>' +
+        '<h1>' +
+        escapeHtml(shopT('notFoundTitle')) +
+        '</h1>' +
+        '<p class="lede" style="margin:1rem auto 0">' +
+        escapeHtml(shopT('notFoundLede')) +
+        '</p>' +
         '<div class="actions" style="justify-content:center">' +
-        '<a class="btn" href="shop.html">Back to the shop</a></div></div>';
+        '<a class="btn" href="' +
+        escapeHtml(shopHref) +
+        '">' +
+        escapeHtml(shopT('backShop')) +
+        '</a></div></div>';
       return;
     }
 
@@ -613,14 +701,14 @@
 
     var avail =
       product.available === false
-        ? '<p class="shop-pd__avail is-out">Sold — ask to be told when one returns.</p>'
-        : '<p class="shop-pd__avail">Made to order</p>';
-    var note = 'We confirm together. No checkout.';
+        ? '<p class="shop-pd__avail is-out">' + escapeHtml(shopT('soldAsk')) + '</p>'
+        : '<p class="shop-pd__avail">' + escapeHtml(productAvailabilityLabel(product)) + '</p>';
+    var note = shopT('confirmNote');
 
     var specs = '';
-    if (product.materials) specs += '<div><dt>Materials</dt><dd>' + escapeHtml(product.materials) + '</dd></div>';
-    if (product.dimensions) specs += '<div><dt>Dimensions</dt><dd>' + escapeHtml(product.dimensions) + '</dd></div>';
-    if (product.care) specs += '<div><dt>Care</dt><dd>' + escapeHtml(product.care) + '</dd></div>';
+    if (product.materials) specs += '<div><dt>' + escapeHtml(shopT('materials')) + '</dt><dd>' + escapeHtml(product.materials) + '</dd></div>';
+    if (product.dimensions) specs += '<div><dt>' + escapeHtml(shopT('dimensions')) + '</dt><dd>' + escapeHtml(product.dimensions) + '</dd></div>';
+    if (product.care) specs += '<div><dt>' + escapeHtml(shopT('care')) + '</dt><dd>' + escapeHtml(product.care) + '</dd></div>';
 
     var related = publishedProducts()
       .filter(function (p) {
@@ -637,7 +725,7 @@
     }
 
     var relatedHtml = related.length
-      ? '<div class="shop-pd__more"><h2>More from the collection</h2>' + galleryHtml(related) + '</div>'
+      ? '<div class="shop-pd__more"><h2>' + escapeHtml(shopT('moreCollection')) + '</h2>' + galleryHtml(related) + '</div>'
       : '';
 
     var contactBtn = document.querySelector('#contact [data-wa-direct]');
@@ -646,7 +734,11 @@
     mount.innerHTML =
       '<article class="wrap shop-pd">' +
       '<nav class="shop-pd__crumb" aria-label="Breadcrumb">' +
-      '<a href="shop.html">Shop</a>' +
+      '<a href="' +
+      escapeHtml(window.angilaI18n ? window.angilaI18n.localizeHref('shop.html', shopLocale()) : 'shop.html') +
+      '">' +
+      escapeHtml(shopT('shopBreadcrumb')) +
+      '</a>' +
       '<span aria-hidden="true"> / </span>' +
       '<a href="shop.html?category=' +
       encodeURIComponent(product.category) +
@@ -685,12 +777,14 @@
       '<div class="shop-pd__actions">' +
       '<a class="btn" href="#contact" data-inquire data-contact="wa" data-wa-msg="' +
       escapeHtml(waProductMsg(product)) +
-      '">Ask about this piece</a>' +
+      '">' +
+      escapeHtml(shopT('inquirePiece')) +
+      '</a>' +
       '</div>' +
       '<p class="shop-pd__note">' +
       escapeHtml(note) +
       '</p>' +
-      (specs ? '<div class="shop-pd__specs"><h2>Details</h2><dl>' + specs + '</dl></div>' : '') +
+      (specs ? '<div class="shop-pd__specs"><h2>' + escapeHtml(shopT('details')) + '</h2><dl>' + specs + '</dl></div>' : '') +
       '</div></div>' +
       relatedHtml +
       '</article>';
@@ -732,7 +826,7 @@
         {
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Shop', item: absUrl('shop.html') },
+            { '@type': 'ListItem', position: 1, name: shopT('shopBreadcrumb'), item: absUrl('shop.html') },
             {
               '@type': 'ListItem',
               position: 2,
@@ -770,6 +864,13 @@
     }
   }
 
+  function menuAriaLabel(open) {
+    if (typeof window.angilaT === 'function') {
+      return window.angilaT(open ? 'nav.closeMenu' : 'nav.openMenu');
+    }
+    return open ? 'Close menu' : 'Open menu';
+  }
+
   function initNav() {
     if (!document.body.classList.contains('shop-page')) return;
     var nav = document.getElementById('nav');
@@ -786,7 +887,7 @@
         sheet.classList.remove('closing');
         sheet.classList.add('o');
         menuBtn.setAttribute('aria-expanded', 'true');
-        menuBtn.setAttribute('aria-label', 'Close menu');
+        menuBtn.setAttribute('aria-label', menuAriaLabel(true));
         sheet.setAttribute('aria-hidden', 'false');
         document.body.classList.add('menu-open');
         var f = sheet.querySelector('.nav-sheet__list a');
@@ -795,7 +896,7 @@
       }
       if (!sheet.classList.contains('o') || menuClosing) return;
       menuBtn.setAttribute('aria-expanded', 'false');
-      menuBtn.setAttribute('aria-label', 'Open menu');
+      menuBtn.setAttribute('aria-label', menuAriaLabel(false));
       document.body.classList.remove('menu-open');
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
         sheet.classList.remove('o', 'closing');
@@ -900,12 +1001,30 @@
     if (productMount) renderProductPage(productMount);
 
     bindContact();
+    bindCustomOrder();
     observeReveal(document.querySelectorAll('.rv:not(.v)'));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
+  var booted = false;
+  function bootShop() {
+    if (booted) return;
+    booted = true;
+    if (shopLocale() === 'ar' && window.ANGILA_SHOP_I18N && window.ANGILA_SHOP_I18N.ar && window.ANGILA_SHOP_I18N.ar.config) {
+      Object.assign(CFG, window.ANGILA_SHOP_I18N.ar.config);
+    }
     init();
+  }
+
+  window.angilaShopPublic = {
+    formatPrice: formatPrice,
+    categoryLabel: categoryLabel,
+    productUrl: productUrl
+  };
+
+  document.addEventListener('angilaI18nReady', bootShop);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootShop);
+  } else {
+    bootShop();
   }
 })();

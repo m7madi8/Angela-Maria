@@ -1,0 +1,38 @@
+/* The Art of Stillness — editorial commerce layer */
+.shop-page.shop-atelier .shop-hero--atelier {
+  min-height: min(72vh, 36rem);
+}
+.shop-page .shop-prelude {
+  padding: clamp(4rem, 10vw, 6.5rem) 0;
+}
+.shop-page .shop-prelude__grid {
+  max-width: 52rem;
+}
+.shop-page .shop-prelude__note.ed-prose {
+  font-size: 1.05rem;
+  line-height: 1.72;
+}
+.shop-page .shop-collection {
+  padding-top: clamp(2rem, 5vw, 3rem);
+}
+.shop-page .shop-catalog__grid {
+  gap: clamp(1.35rem, 3vw, 2.25rem);
+}
+.shop-page .shop-pcard {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .shop-page .shop-pcard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 48px rgba(41, 42, 39, 0.12);
+  }
+  .shop-page .shop-pcard__photo img {
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .shop-page .shop-pcard:hover .shop-pcard__photo img {
+    transform: scale(1.04);
+  }
+}
+.shop-page .shop-custom {
+  background: var(--earth, #69513e);
+}

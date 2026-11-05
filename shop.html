@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="site-i18n-locale.js"></script>
+<link rel="stylesheet" href="site-i18n-rtl.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#24382C">
 <title>The Art of Stillness — Handmade shop — Angela-Maria</title>
@@ -18,18 +20,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Caveat:wght@400;500&family=Hanken+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="workshops.css">
 <link rel="stylesheet" href="shop.css">
+<link rel="stylesheet" href="editorial.css">
 <link rel="stylesheet" href="site-motion.css">
+<link rel="stylesheet" href="shop-creative.css">
 <noscript><style>.rv{opacity:1;transform:none}</style></noscript>
 </head>
-<body class="shop-page shop-atelier">
+<body class="shop-page shop-atelier" data-i18n-page="shop">
 <a class="skip" href="#main">Skip to content</a>
 
 <header id="nav" aria-label="Site">
 <div class="nav-bar wrap">
 <a class="logo logo--mark" href="/" aria-label="Angela — Yoga and Movement"><img src="logo-light.svg" alt="" width="1631" height="1073"></a>
 <div class="nav-actions">
+<div class="lang-switch" id="lang-switch" hidden></div>
 <nav class="nav-links" aria-label="Primary">
-<a href="workshops.html">Workshops</a><a href="/#courses">Courses</a><a href="/#oneone">1:1</a><a href="shop.html" aria-current="page">Shop</a><a href="/#about">About</a>
+<a href="yoga.html">Yoga</a><a href="workshops.html">Experiences</a><a href="shop.html" aria-current="page">Shop</a><a href="about.html">About</a>
 </nav>
 <a class="nav-cta" href="#contact" data-contact="wa">Ask about a piece</a>
 <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-sheet" aria-label="Open menu">
@@ -44,11 +49,11 @@
 <div class="nav-sheet__panel">
 <div class="nav-sheet__inner">
 <nav class="nav-sheet__list" aria-label="Mobile">
-<a href="workshops.html">Workshops</a>
-<a href="/#courses">Online courses</a>
-<a href="/#oneone">1:1 online</a>
+<a href="yoga.html">Yoga &amp; movement</a>
+<a href="workshops.html">Experiences</a>
 <a href="shop.html" aria-current="page">Shop</a>
-<a href="/#about">About</a>
+<a href="about.html">About</a>
+<a href="/#oneone">1:1 online</a>
 <a href="#contact">Say hello</a>
 </nav>
 <div class="nav-sheet__foot">
@@ -86,10 +91,15 @@
 <p class="meta">The making</p>
 </div>
 <div class="shop-prelude__copy">
-<h2 class="shop-prelude__title" id="shop-story-title">Made by hand.</h2>
-<p class="shop-prelude__note" id="shop-story-note"></p>
-<p class="shop-prelude__fine">One of a kind. Price on request.</p>
-<a class="shop-prelude__more" href="/#about">About Angela-Maria</a>
+<h2 class="shop-prelude__title" id="shop-story-title">The story behind The Art of Stillness</h2>
+<div class="ed-prose shop-prelude__note" id="shop-story-body">
+<p data-i18n="stillness.p1"></p>
+<p data-i18n="stillness.p2"></p>
+<p data-i18n="stillness.p3"></p>
+<p data-i18n="stillness.p4"></p>
+</div>
+<p class="shop-prelude__fine">Ready pieces and custom requests — we confirm together. No online checkout yet.</p>
+<a class="shop-prelude__more" href="about.html">About Angelina</a>
 </div>
 </div>
 </section>
@@ -108,6 +118,19 @@
 <div id="shop-catalog-mount" class="shop-catalog__grid">
 <noscript><p class="shop-empty">Enable JavaScript to see the pieces.</p></noscript>
 </div>
+</div>
+</section>
+
+<section id="shop-custom" class="earth shop-custom cv" aria-labelledby="shop-custom-title">
+<div class="wrap shop-custom__grid rv">
+<h2 class="ed-title" id="shop-custom-title">Request a custom dream catcher</h2>
+<p class="shop-custom__hint" id="shop-custom-lede">Some pieces are ready to welcome you home; others are made slowly after we speak.</p>
+<p class="ed-placeholder" id="shop-custom-placeholder">Customization choices will be confirmed with Angelina.</p>
+<form class="shop-custom__form" id="custom-order-form" action="#" method="get">
+<label for="custom-notes">Your notes</label>
+<textarea id="custom-notes" name="notes" rows="4" placeholder="Tell Angelina what you have in mind…" required></textarea>
+<button type="submit" class="btn" id="custom-order-submit" data-wa-direct>Send request on WhatsApp</button>
+</form>
 </div>
 </section>
 
@@ -134,8 +157,16 @@
 
 <script src="vendor/lenis.min.js"></script>
 <script src="site-scroll.js"></script>
+<script src="content-angelina.js"></script>
+<script src="site-i18n-strings.js"></script>
+<script src="site-i18n-bindings.js"></script>
+<script src="site-i18n-wa.js"></script>
+<script src="site-i18n.js"></script>
+<script src="shop-i18n-strings.js"></script>
+<script src="shop-data-i18n.js"></script>
 <script src="shop-config.js"></script>
 <script src="site-contact.js"></script>
+<script src="site-transitions.js"></script>
 <script src="shop-data.js"></script>
 <script src="shop.js"></script>
 </body>
